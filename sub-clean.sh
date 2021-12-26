@@ -26,7 +26,7 @@ SUB_FILEPATH="$1"
 [ ! -f "$SUB_FILEPATH" ] && { echo "usage: sub-clean.sh [FILE]" ; echo "Warning: subtitle file does not exist" ; exit 1 ; }
 
 # lowercase list of regex (gore/magic?) that will be removed from srt
-REGEX_TO_REMOVE='(br|dvd|web).?(rip|scr)|english (- )?us|sdh|srt(?!a|o)|(yahoo|mail|book|fb|4m|hd)\. ?com|(sub(title)?(bed)?(s)?(fix)?|encode(d)?|correct(ed|ion(s)?)|caption(s|ed)|sync(ed|hroniz(ation|ed))?|english)(.pr(esented|oduced))?.?(by|&)|[^a-z]www\.|http|\. ?(co|pl|link|org|net|mp4|mkv|avi|pdf)([^a-z]|$)|©|™'
+REGEX_TO_REMOVE='(br|dvd|web).?(rip|scr)|english (- )?us|sdh|srt(?!a|o)|(yahoo|mail|book|fb|4m|hd)\. ?com|(sub(title)?(bed)?(s)?(fix)?|encode(d)?|correct(ed|ion(s)?)|caption(s|ed)|sync(ed|hroniz(ation|ed))?|english)(.pr(esented|oduced))?.?(by|&)|[^a-z]www\.|http|\. ?(co|pl|link|org|net|mp4|mkv|avi|pdf)([^a-z]|$)|©|™|((B|b)lu(R|r)ay)'
 # regex lists seperated for compatibility with old implementations of awk that require <400 characters
 REGEX_TO_REMOVE2='opensubtitles|sub(scene|rip)|podnapisi|addic7ed|titlovi|bozxphd|sazu489|psagmeno|normita|anoxmous|isubdb|americascardroom'
 
@@ -50,6 +50,11 @@ then
         mv "$SUB_FILEPATH.tmp" "$SUB_FILEPATH" && \
         chmod $CHMOD "$SUB_FILEPATH" && \
         echo "sub-clean.sh succesfully processed $SUB_FILEPATH"
+
+        if [ -f "$SUB_FILEPATH.tmp" ]
+        then
+                rm "$SUB_FILEPATH.tmp"
+        fi
 
         if [ -f "$SUB_FILEPATH.trash.tmp" ]
         then
